@@ -231,34 +231,166 @@
 
 (defun dijagonalaNarandzasta (stanje zid pozicija)
 
-      ; 0  0
-      ; 4  1
-      ; 8  2
-      ; 12 3 
-     
-
-      (if   (and 
-                  (equal (nth pozicija (nth zid stanje) )  ( dijagonalaZidNarandzasti stanje  (+ zid 4)  (+ pozicija 1) ))
+      (cond ( (equal zid 4) '())
+            (t (cons (if (and 
+                              (equal (nth pozicija (nth zid stanje)) (nth (+ pozicija 1) (nth (+ zid 4) stanje)))
+                              (equal (nth (+ pozicija 1) (nth (+ zid 4) stanje)) (nth (+ pozicija 2) (nth (+ zid 8) stanje)))
+                              (equal (nth (+ pozicija 2) (nth (+ zid 8) stanje)) (nth (+ pozicija 3) (nth (+ zid 12) stanje)))
+                        )
+                        (nth pozicija (nth zid stanje)) 
+                   ) 
+                   ( dijagonalaNarandzasta stanje (+ zid 1) pozicija)
+             ) 
             )
       )
 )
 
-(defun dijagonalaZidNarandzasta (stanje zid pozicija)
-
- (and 
-      (equal (nth pozicija (nth zid stanje)) (nth (+ 1 pozicija) (nth (+ zid 4) stanje)))
-      (equal (nth (+ 1 pozicija) (nth (+ zid 4) stanje)) (nth (+ 2 pozicija) (nth (+ zid 8) stanje)) )
-      (equal (nth (+ 2 pozicija) (nth (+ zid 8) stanje)) (nth (+ 3 pozicija) (nth (+ zid 12) stanje)) )
+(defun dijagonalaNarandzasta2 (stanje zid pozicija)
+(cond ( (equal zid 4) '())
+            (t (cons (if (and 
+                              (equal (nth pozicija (nth (+ zid 12) stanje)) (nth (+ pozicija 1) (nth (+ zid 8) stanje)))
+                              (equal (nth (+ pozicija 1) (nth (+ zid 8) stanje)) (nth (+ pozicija 2) (nth (+ zid 4) stanje)))
+                              (equal (nth (+ pozicija 2) (nth (+ zid 4) stanje)) (nth (+ pozicija 3) (nth zid stanje)))
+                        )
+                        (nth (+ pozicija 3) (nth zid stanje)) 
+                   ) 
+                   ( dijagonalaNarandzasta2 stanje (+ zid 1) pozicija)
+             ) 
+            )
       )
+)
 
+(defun dijagonalaBocna (stanje zid pozicija)
+(cond ( (equal zid 19) '()) ; kad se zove prosledi se za zid 3 tj n-1, a ako dodje do (n-1) + n*n ispada, poslednji validan poziv je n*n -1 sto je u slucaju n=4 15
+            (t (cons (if (and 
+                              (equal (nth pozicija (nth zid stanje)) (nth (+ pozicija 1) (nth (- zid 1) stanje)))
+                              (equal (nth (+ pozicija 1) (nth (- zid 1) stanje)) (nth (+ pozicija 2) (nth (- zid 2) stanje)))
+                              (equal (nth (+ pozicija 2) (nth (- zid 2) stanje)) (nth (+ pozicija 3) (nth (- zid 3) stanje)))
+                        )
+                        (nth pozicija (nth zid stanje)) 
+                   ) 
+                   ( dijagonalaBocna stanje (+ zid 4) pozicija)
+             ) 
+            )
+      )
+)
+
+
+
+(defun dijagonalaBocna2 (stanje zid pozicija)
+(cond ( (equal zid 16) '()) ; u pozivu se za zid prosledi 0, poslednji validan poziv je 12 sto je n*(n-1)
+            (t (cons (if (and 
+                              (equal (nth pozicija (nth zid stanje)) (nth (+ pozicija 1) (nth (+ zid 1) stanje)))
+                              (equal (nth (+ pozicija 1) (nth (+ zid 1) stanje)) (nth (+ pozicija 2) (nth (+ zid 2) stanje)))
+                              (equal (nth (+ pozicija 2) (nth (+ zid 2) stanje)) (nth (+ pozicija 3) (nth (+ zid 3) stanje)))
+                        )
+                        (nth pozicija (nth zid stanje)) 
+                   ) 
+                   ( dijagonalaBocna2 stanje (+ zid 4) pozicija)
+             ) 
+            )
+      )
+)
+
+
+(defun dijagonalaTopDown (stanje zid pozicija); poziva se sa zid 0 pozicija 0 a zid se povecava za 5 odnosno za n+1 prilikom poredjenja
+(cond ( (equal pozicija 4) '()) 
+            (t (cons (if (and 
+                              (equal (nth pozicija (nth zid stanje)) (nth pozicija (nth (+ zid 5) stanje)))
+                              (equal (nth pozicija (nth (+ zid 5) stanje)) (nth pozicija (nth (+ zid 10) stanje)))
+                              (equal (nth pozicija (nth (+ zid 10) stanje)) (nth pozicija (nth (+ zid 15) stanje)))
+                        )
+                        (nth pozicija (nth zid stanje)) 
+                   ) 
+                   ( dijagonalaTopDown stanje zid (+ pozicija 1))
+             ) 
+            )
+      )
+)
+
+
+(defun dijagonalaTopDown2(stanje zid pozicija); poziva se sa zid 12 pozicija 0 u slucaju n=4, a generalno sa (n-1)*n za zid a zid se smanjuje za 3 odnosno za n-1 prilikom poredjenja 
+(cond ( (equal pozicija 4) '()) ; 
+            (t (cons (if (and 
+                              (equal (nth pozicija (nth zid stanje)) (nth pozicija (nth (- zid 3) stanje)))
+                              (equal (nth pozicija (nth (- zid 3) stanje)) (nth pozicija (nth (- zid 6) stanje)))
+                              (equal (nth pozicija (nth (- zid 6) stanje)) (nth pozicija (nth (- zid 9) stanje)))
+                        )
+                        (nth pozicija (nth zid stanje)) 
+                   ) 
+                   ( dijagonalaTopDown2 stanje zid (+ pozicija 1))
+             ) 
+            )
+      )
+)
+
+
+(defun dijagonalaVelika1(stanje zid pozicija) ;zove se za zid=0
+                  (if (and 
+                              (equal (nth pozicija (nth zid stanje)) (nth (+ pozicija 1) (nth (+ zid 5) stanje)))
+                              (equal (nth (+ pozicija 1) (nth (+ zid 5) stanje)) (nth (+ pozicija 2) (nth (+ zid 10) stanje)))
+                              (equal (nth (+ pozicija 2) (nth (+ zid 10) stanje)) (nth (+ pozicija 3) (nth (+ zid 15) stanje)))
+                        )
+                        (nth pozicija (nth zid stanje)) 
+                   ) 
+)
+
+(defun dijagonalaVelika2(stanje zid pozicija); zove se za zid=12
+                  (if (and 
+                              (equal (nth pozicija (nth zid stanje)) (nth (+ pozicija 1) (nth (- zid 3) stanje)))
+                              (equal (nth (+ pozicija 1) (nth (- zid 3) stanje)) (nth (+ pozicija 2) (nth (- zid 6) stanje)))
+                              (equal (nth (+ pozicija 2) (nth (- zid 6) stanje)) (nth (+ pozicija 3) (nth (- zid 9) stanje)))
+                        )
+                        (nth pozicija (nth zid stanje)) 
+                   ) 
+)
+
+(defun dijagonalaVelika3(stanje zid pozicija) ; zove se za zid=15
+                  (if (and 
+                              (equal (nth pozicija (nth zid stanje)) (nth (+ pozicija 1) (nth (- zid 5) stanje)))
+                              (equal (nth (+ pozicija 1) (nth (- zid 5) stanje)) (nth (+ pozicija 2) (nth (- zid 10) stanje)))
+                              (equal (nth (+ pozicija 2) (nth (- zid 10) stanje)) (nth (+ pozicija 3) (nth ( zid 15) stanje)))
+                        )
+                        (nth pozicija (nth zid stanje)) 
+                   )  
+)
+
+(defun dijagonalaVelika4(stanje zid pozicija); zove se za zid=3 
+                 (if (and 
+                              (equal (nth pozicija (nth zid stanje)) (nth (+ pozicija 1) (nth (+ zid 3) stanje)))
+                              (equal (nth (+ pozicija 1) (nth (+ zid 3) stanje)) (nth (+ pozicija 2) (nth (+ zid 6) stanje)))
+                              (equal (nth (+ pozicija 2) (nth (+ zid 6) stanje)) (nth (+ pozicija 3) (nth (+ zid 9) stanje)))
+                        )
+                        (nth pozicija (nth zid stanje)) 
+                   ) 
+)
+
+(defun prebroji24 (ret)
+      (cond 
+       ((equal (cdr ret) NIL ) '())
+       ((equal (car ret) 'X) (setq bodoviX (+ bodoviX 1))) 
+       ((equal (car ret) 'O) (setq bodoviO (+ bodoviO 1)))
+      )
+      (format t "~%Uros ~%"  )
+      ( prebroji24 (cdr ret))
 )
 
 (defun saberiBodove ()
+;(print (dijagonalaNarandzasta stanje '0 '0))
+( prebroji24 ( dijagonalaNarandzasta stanje '0 '0)) 
+;(prebroji24 (dijagonalaNarandzasta2 stanje '0 '0)) 
+;(prebroji24 (dijagonalaBocna stanje '3 '0)) 
+;(prebroji24 (dijagonalaBocna2 stanje '0 '0)) 
+;(prebroji24 (dijagonalaTopDown stanje '0 '0)) 
+;(prebroji24 (dijagonalaTopDown2 stanje '12 '0)) 
 
-
+(cond ( (equal (dijagonalaVelika1 stanje '0 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika1 stanje '0 '0) 'O ) (setq bodoviO (+ bodoviO 1))) ((equal (dijagonalaVelika2 stanje '12 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika2 stanje '12 '0) 'O ) (setq bodoviO (+ bodoviO 1)))  
+      ((equal (dijagonalaVelika3 stanje '15 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika3 stanje '15 '0) 'O ) (setq bodoviO (+ bodoviO 1))) ((equal (dijagonalaVelika4 stanje '3 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika4 stanje '3 '0) 'O ) (setq bodoviO (+ bodoviO 1))) 
+)
+(format t "~%X ima ~a ~%" bodoviX)
+(format t "~%O ima ~a ~%" bodoviO)
 
 )
-
 
 (defun odrediPobednika()
       (saberiBodove)
@@ -290,7 +422,7 @@
 (postaviPocetno 4 )
 
 ;(trace kraj)
-(odigrajPotez 0)
+(odigrajPotez 0);x
 (odigrajPotez 1)
 (odigrajPotez 0)
 (odigrajPotez 1)
@@ -299,8 +431,63 @@
 (odigrajPotez 1)
 (odigrajPotez 0)
 (odigrajPotez 1)
+
+(odigrajPotez 4)
+(odigrajPotez 5)
+(odigrajPotez 4) ;x
+
+(odigrajPotez 8)
+(odigrajPotez 8)
+;(odigrajPotez 9)
+(odigrajPotez 8);x
+
+(odigrajPotez 12)
+(odigrajPotez 12)
+(odigrajPotez 12)
+(odigrajPotez 12);x
+
+(odigrajPotez 5) ; 1 5
+;(odigrajPotez 9) 
+;(odigrajPotez 9) 
+;(odigrajPotez 9) ; 2 9
+(odigrajPotez 13) 
+(odigrajPotez 13) 
+(odigrajPotez 13) 
+(odigrajPotez 14)
+(odigrajPotez 13)  
+(odigrajPotez 15)
+(odigrajPotez 6)
+(odigrajPotez 6)
+(odigrajPotez 3)
+(odigrajPotez 9)
+(odigrajPotez 2)
+(odigrajPotez 9)
+(odigrajPotez 2)
+(odigrajPotez 6)
+(odigrajPotez 3)
+(odigrajPotez 3)
+(odigrajPotez 2)
+(odigrajPotez 3)
+
+
 (ispisiStanje stanje)
-(print (vertikalniPogodci stanje))
+(setq bodoviX 0)
+(setq bodoviO 0)
+(saberiBodove)
+;(trace saberiBodove)
+
+;(print (dijagonalaNarandzasta stanje '0 '0))
+;(print (dijagonalaNarandzasta2 stanje '0 '0))
+;(print (dijagonalaBocna stanje '3 '0))
+;(print (dijagonalaBocna2 stanje '0 '0))
+;(print (dijagonalaTopDown stanje '0 '0))
+;(print (dijagonalaTopDown2 stanje '12 '0))
+
+;(print (dijagonalaVelika2 stanje '12 '0))
+;(print (dijagonalaVelika1 stanje '0 '0))
+;(print (dijagonalaVelika3 stanje '15 '0))
+;(print (dijagonalaVelika4 stanje '3 '0))
+
 
 ;(print (length (member '- (car stanje))))
 ;(pocniIgru)

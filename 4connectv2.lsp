@@ -76,16 +76,29 @@
 )
 
 (defun odigrajPotez(brojStubica)
-    (setq stanje (promeniStanje brojStubica stanje))
+    (if ( dobarPotez stanje brojStubica)  (setq stanje (promeniStanje brojStubica stanje)) )
+   
 )
 
 (defun odigrajPotezBezPamcenja(stanje brojStubica)
-    (promeniStanje brojStubica stanje)
+      (if ( dobarPotez stanje brojStubica)  (promeniStanje brojStubica stanje))
+   
+)
+
+(defun odigrajPotezBezPamcenjaSimbol(stanje brojStubica simbol)
+    (promeniStanjeSimbol brojStubica stanje simbol)
 )
 
 (defun promeniStanje (brojStubica stanje)
             (cond ((equal brojStubica 0) (cons (modifikujListu (car stanje)) (cdr stanje) ))
                   (t (cons (car stanje) (promeniStanje (1- brojStubica) (cdr stanje))) )
+                 
+            )
+)
+
+(defun promeniStanjeSimbol (brojStubica stanje simbol)
+            (cond ((equal brojStubica 0) (cons (modifikujListu2 (car stanje) simbol ) (cdr stanje) ))
+                  (t (cons (car stanje) (promeniStanjeSimbol (1- brojStubica) (cdr stanje) simbol)) )
                  
             )
 )
@@ -104,11 +117,25 @@
       )
 
 )
+
+(defun modifikujListu2 (stubic simbol)
+
+      (cond ((equal (car stubic) '-) (cons simbol (cdr stubic)) )
+      ( (equal (car stubic) 'X ) (cons 'X (modifikujListu2 (cdr stubic) simbol)) )
+      (t (cons 'O (modifikujListu2 (cdr stubic)simbol)))
+      )
+
+)
 ;-----------------------------------------------------------------------------------
 ;Na osnovu stanja odigra dati potez i vrati novo stanje
 (defun odigrajNoviPotez (stanje potez)
 
       (if (dobarPotez stanje potez)(odigrajPotezBezPamcenja stanje potez))
+
+)
+(defun odigrajNoviPotezSimbol (stanje potez simbol)
+      ;OVDE VRACA NILL KAD JE POPUNJEA VRSTA A POKUSA DA DODA
+      (if (dobarPotez stanje potez)(odigrajPotezBezPamcenjaSimbol stanje potez simbol) )
 
 )
 (defun rekurzivnoIgrajPoteze(stanje potez)
@@ -119,9 +146,25 @@
       )
 
 )
-(defun generisiListuSledbenika()
-      (rekurzivnoIgrajPoteze stanje (* velicinaKocke velicinaKocke))
+(defun rekurzivnoIgrajPotezeSimbol(stanje potez simbol)
+
+      (cond ( (equal potez 0) (cons (odigrajNoviPotezSimbol stanje 0 simbol) () ) )
+      (t (cons (odigrajNoviPotezSimbol stanje potez simbol) (rekurzivnoIgrajPotezeSimbol stanje (1- potez) simbol ) )  )
+      
+      )
+
 )
+(defun izbaciNulElemente (lista)
+      (remove nil lista)
+
+)
+(defun generisiListuSledbenika(stanje)
+      (izbaciNulElemente(rekurzivnoIgrajPoteze stanje (1- (* velicinaKocke velicinaKocke))))
+)
+
+(defun generisiListuSledbenikaSimbol(stanje simbol)
+      (izbaciNulElemente(rekurzivnoIgrajPotezeSimbol stanje (1- (* velicinaKocke velicinaKocke)) simbol )
+))
 
 (defun odrediPobednika()
 
@@ -134,9 +177,10 @@
 (defun dobarPotez (stanje potez)
       (if (< potez (* velicinaKocke velicinaKocke)) (if (stubicPun stanje potez) T NIL)  NIL )
 )
+
 (defun OdigrajPotezIPocniNovu ()
-( odigrajPotez potez)
-( pocniIgru)
+      ( odigrajPotez potez)
+      ( pocniIgru)
 )
 
 (defun daLiJeKraj(stanje)
@@ -262,15 +306,15 @@
 
 (defun odrediPobednika()
       (saberiBodove)
-      (if (> bodoviX bodoviO) (print "POBEDNIK X") (print "POBEDNIK O") )
+     ; (if (> bodoviX bodoviO) (print "POBEDNIK X") (print "POBEDNIK O") )
 )
 
 (defun pocniIgru()
 
       
       (if (daLiJeKraj stanje) (odrediPobednika))
-      (setq bodoviX 0)
-      (setq bodoviO 0)
+      ;(setq bodoviX 0)
+      ;(setq bodoviO 0)
       ( ispisiStanje stanje)
       (format t "~%Igrac ~a je na potezu~%" igrac)
       (princ "Unesi broj stubica: ")
@@ -286,22 +330,46 @@
             ( t (+ (length (member '- (car stanje)))( daLiSadrziPraznaPolja(cdr stanje))))
       )
 )
+;10 AKO SI TI POBEDIO -10 AKO SI IZGUBIO 0 AKO NISTA 
+(defun daLiJeKrajBroj (stanje)
+
+)
+
+(defun proceni-stanje (stanje)
+
+)
+;objekat je tipa (stanje , heruistika)
+(defun max-stanje (objekat)
+
+)
+;objekat je tipa (stanje , heruistika)
+(defun min-stanje (objekat)
+
+)
+
+(defun minimax (stanje dubina moj-potez start)
+      (let ((lp (generisiListuSledbenikaSimbol stanje moj-potez))
+            (f (if moj-potez 'max-stanje 'min-stanje))
+      )
+
+      (cond ((or (zerop dubina) (null lp))
+            (list stanje (or (daLiJeKrajBroj stanje) (proceni-stanje stanje))))
+            (start (apply f (list (mapcar (lambda (x)
+               (minimax x (1- dubina) (not moj-potez) '())) lp))))
+            (t (cons stanje (cdr (apply f (list (mapcar (lambda (x)
+               (minimax x (1- dubina) (not moj-potez) '())) lp))))))))
+               
+)
 
 (postaviPocetno 4 )
 
 ;(trace kraj)
-(odigrajPotez 0)
-(odigrajPotez 1)
-(odigrajPotez 0)
-(odigrajPotez 1)
 
-(odigrajPotez 0)
-(odigrajPotez 1)
-(odigrajPotez 0)
-(odigrajPotez 1)
-(ispisiStanje stanje)
-(print (vertikalniPogodci stanje))
 
+
+;(trace rekurzivnoIgrajPotezeSimbol)
+(print  (generisiListuSledbenikaSimbol stanje 'O))
+;(print  (generisiListuSledbenikaSimbol stanje 'O))
 ;(print (length (member '- (car stanje))))
 ;(pocniIgru)
 ;(print (odigrajNoviPotez stanje '24))

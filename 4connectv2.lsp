@@ -415,18 +415,16 @@
        ((equal (car ret) 'X) (setq bodoviX (+ bodoviX 1))) 
        ((equal (car ret) 'O) (setq bodoviO (+ bodoviO 1)))
       )
-      (format t "~%Uros ~%"  )
       ( prebroji24 (cdr ret))
 )
 
 (defun saberiBodove ()
-;(print (dijagonalaNarandzasta stanje '0 '0))
 ( prebroji24 ( dijagonalaNarandzasta stanje '0 '0)) 
-;(prebroji24 (dijagonalaNarandzasta2 stanje '0 '0)) 
-;(prebroji24 (dijagonalaBocna stanje '3 '0)) 
-;(prebroji24 (dijagonalaBocna2 stanje '0 '0)) 
-;(prebroji24 (dijagonalaTopDown stanje '0 '0)) 
-;(prebroji24 (dijagonalaTopDown2 stanje '12 '0)) 
+(prebroji24 (dijagonalaNarandzasta2 stanje '0 '0)) 
+(prebroji24 (dijagonalaBocna stanje '3 '0)) 
+(prebroji24 (dijagonalaBocna2 stanje '0 '0)) 
+(prebroji24 (dijagonalaTopDown stanje '0 '0)) 
+(prebroji24 (dijagonalaTopDown2 stanje '12 '0)) 
 
 (cond ( (equal (dijagonalaVelika1 stanje '0 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika1 stanje '0 '0) 'O ) (setq bodoviO (+ bodoviO 1))) ((equal (dijagonalaVelika2 stanje '12 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika2 stanje '12 '0) 'O ) (setq bodoviO (+ bodoviO 1)))  
       ((equal (dijagonalaVelika3 stanje '15 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika3 stanje '15 '0) 'O ) (setq bodoviO (+ bodoviO 1))) ((equal (dijagonalaVelika4 stanje '3 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika4 stanje '3 '0) 'O ) (setq bodoviO (+ bodoviO 1))) 
@@ -496,7 +494,6 @@
 (postaviPocetno 4 )
 
 ;(trace kraj)
-<<<<<<< HEAD
 (odigrajPotez 0);x
 (odigrajPotez 1)
 (odigrajPotez 0)
@@ -563,8 +560,6 @@
 ;(print (dijagonalaVelika3 stanje '15 '0))
 ;(print (dijagonalaVelika4 stanje '3 '0))
 
-=======
->>>>>>> b6d0d4f975524a0c548f9ae1d94b2a57475b02df
 
 
 

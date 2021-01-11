@@ -420,7 +420,6 @@
       (cond ((null list) 0)
             ((equal (car list) 'O ) (+ 1 (prebrojiO (cdr list))))
             (t (prebrojiO (cdr list)))
-      
       )
 )
 (defun prebroji24 (ret)
@@ -430,15 +429,18 @@
 
 )
 
-(defun saberiBodove ()
-;(print (dijagonalaNarandzasta stanje '0 '0))
-( prebroji24 ( dijagonalaNarandzasta stanje '0 '0)) 
-;(prebroji24 (dijagonalaNarandzasta2 stanje '0 '0)) 
-;(prebroji24 (dijagonalaBocna stanje '3 '0)) 
-;(prebroji24 (dijagonalaBocna2 stanje '0 '0)) 
-;(prebroji24 (dijagonalaTopDown stanje '0 '0)) 
-;(prebroji24 (dijagonalaTopDown2 stanje '12 '0)) 
+(defun saberiBodove () 
+(prebroji24 (horizontalniPogodci stanje '0 '0)) 
+(prebroji24 (horizontalniPogodci2 stanje '0 '0)) 
+(prebroji24 (vertikalniPogodci stanje))
 
+( prebroji24 ( dijagonalaNarandzasta stanje '0 '0)) 
+(prebroji24 (dijagonalaNarandzasta2 stanje '0 '0)) 
+(prebroji24 (dijagonalaBocna stanje '3 '0)) 
+(prebroji24 (dijagonalaBocna2 stanje '0 '0)) 
+(prebroji24 (dijagonalaTopDown stanje '0 '0)) 
+(prebroji24 (dijagonalaTopDown2 stanje '12 '0)) 
+;brojanje 3D dijagonala
 (cond ( (equal (dijagonalaVelika1 stanje '0 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika1 stanje '0 '0) 'O ) (setq bodoviO (+ bodoviO 1))) ((equal (dijagonalaVelika2 stanje '12 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika2 stanje '12 '0) 'O ) (setq bodoviO (+ bodoviO 1)))  
       ((equal (dijagonalaVelika3 stanje '15 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika3 stanje '15 '0) 'O ) (setq bodoviO (+ bodoviO 1))) ((equal (dijagonalaVelika4 stanje '3 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika4 stanje '3 '0) 'O ) (setq bodoviO (+ bodoviO 1))) 
 )
@@ -512,5 +514,4 @@
 (postaviPocetno 4 )
 
 (print (minimax stanje 2 'X T))
-;(odigrajPotez 1)
-;(print (if (equal stanje '((- - - -) (X - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -))) '10 '0))
+

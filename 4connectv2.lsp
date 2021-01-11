@@ -122,7 +122,7 @@
 
       (cond ((equal (car stubic) '-) (cons simbol (cdr stubic)) )
       ( (equal (car stubic) 'X ) (cons 'X (modifikujListu2 (cdr stubic) simbol)) )
-      (t (cons 'O (modifikujListu2 (cdr stubic)simbol)))
+      (t (cons 'O (modifikujListu2 (cdr stubic) simbol)))
       )
 
 )
@@ -134,7 +134,7 @@
 
 )
 (defun odigrajNoviPotezSimbol (stanje potez simbol)
-      ;OVDE VRACA NILL KAD JE POPUNJEA VRSTA A POKUSA DA DODA
+     
       (if (dobarPotez stanje potez)(odigrajPotezBezPamcenjaSimbol stanje potez simbol) )
 
 )
@@ -479,113 +479,38 @@
 )
 
 (defun proceni-stanje (stanje)
-
+      (format t "~%gledam ~a ~%" stanje)
+     (if (equal stanje '((- - - -) (X O - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -))) '10 '0)
 )
 ;listaObjekata je lista objekata tipa (stanje , heruistika)
 (defun max-stanje (listaObjekata)
-
+       (format t "~%listaObjekata ~a ~%" listaObjekata)
+      (car listaObjekata)
 )
 ;listaObjekata je lista objekata tipa (stanje , heruistika)
 (defun min-stanje (listaObjekata)
-
+      (car (cdr listaObjekata))
 )
-
+(defun zameniXO (ulaz)
+      (if (equal ulaz 'X) 'O 'X )
+)
 (defun minimax (stanje dubina moj-potez start)
       (let ((lp (generisiListuSledbenikaSimbol stanje moj-potez))
-            (f (if moj-potez 'max-stanje 'min-stanje))
+            (f (if (equal moj-potez 'X) 'max-stanje 'min-stanje))
       )
 
       (cond ((or (zerop dubina) (null lp))
             (list stanje (or (daLiJeKrajBroj stanje) (proceni-stanje stanje))))
+            ;(list stanje   (proceni-stanje stanje)))
             (start (apply f (list (mapcar (lambda (x)
-               (minimax x (1- dubina) (not moj-potez) '())) lp))))
+               (minimax x (1- dubina) (zameniXO moj-potez) '())) lp))))
             (t (cons stanje (cdr (apply f (list (mapcar (lambda (x)
-               (minimax x (1- dubina) (not moj-potez) '())) lp))))))))
+               (minimax x (1- dubina) (zameniXO moj-potez) '())) lp))))))))
                
 )
 
 (postaviPocetno 4 )
 
-;(trace kraj)
-
-(odigrajPotez 0);x
-(odigrajPotez 1)
-(odigrajPotez 0)
-(odigrajPotez 1)
-
-(odigrajPotez 0)
-(odigrajPotez 1)
-(odigrajPotez 0)
-(odigrajPotez 1)
-
-(odigrajPotez 4)
-(odigrajPotez 5)
-(odigrajPotez 4) ;x
-
-(odigrajPotez 8)
-(odigrajPotez 8)
-;(odigrajPotez 9)
-(odigrajPotez 8);x
-
-(odigrajPotez 12)
-(odigrajPotez 12)
-(odigrajPotez 12)
-(odigrajPotez 12);x
-
-(odigrajPotez 5) ; 1 5
-;(odigrajPotez 9) 
-;(odigrajPotez 9) 
-;(odigrajPotez 9) ; 2 9
-(odigrajPotez 13) 
-(odigrajPotez 13) 
-(odigrajPotez 13) 
-(odigrajPotez 14)
-(odigrajPotez 13)  
-(odigrajPotez 15)
-(odigrajPotez 6)
-(odigrajPotez 6)
-(odigrajPotez 3)
-(odigrajPotez 9)
-(odigrajPotez 2)
-(odigrajPotez 9)
-(odigrajPotez 2)
-(odigrajPotez 6)
-(odigrajPotez 3)
-(odigrajPotez 3)
-(odigrajPotez 2)
-(odigrajPotez 3)
-
-
-(ispisiStanje stanje)
-(setq bodoviX 0)
-(setq bodoviO 0)
-(saberiBodove)
-;(trace saberiBodove)
-
-;(print (dijagonalaNarandzasta stanje '0 '0))
-;(print (dijagonalaNarandzasta2 stanje '0 '0))
-;(print (dijagonalaBocna stanje '3 '0))
-;(print (dijagonalaBocna2 stanje '0 '0))
-;(print (dijagonalaTopDown stanje '0 '0))
-;(print (dijagonalaTopDown2 stanje '12 '0))
-
-;(print (dijagonalaVelika2 stanje '12 '0))
-;(print (dijagonalaVelika1 stanje '0 '0))
-;(print (dijagonalaVelika3 stanje '15 '0))
-;(print (dijagonalaVelika4 stanje '3 '0))
-
-
-
-
-
-;(trace rekurzivnoIgrajPotezeSimbol)
-;(print  (generisiListuSledbenikaSimbol stanje 'O))
-;(print  (generisiListuSledbenikaSimbol stanje 'O))
-;(print (length (member '- (car stanje))))
-;(pocniIgru)
-;(print (odigrajNoviPotez stanje '24))
-;( ispisiStanje stanje)
-;(trace rekurzivnoIgrajPoteze)
-;(print (rekurzivnoIgrajPoteze stanje 15))
-;(print (generisiListuSledbenika))
-(print (prebrojiO '(X O X X)))
+(print (minimax stanje 2 'X T))
+;(odigrajPotez 1)
+;(print (if (equal stanje '((- - - -) (X - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -))) '10 '0))

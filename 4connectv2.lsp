@@ -290,7 +290,7 @@
 )
 
 (defun dijagonalaNarandzasta2 (stanje zid pozicija)
-(cond ( (equal zid 4) '())
+      (cond ( (equal zid 4) '())
             (t (cons (if (and 
                               (equal (nth pozicija (nth (+ zid 12) stanje)) (nth (+ pozicija 1) (nth (+ zid 8) stanje)))
                               (equal (nth (+ pozicija 1) (nth (+ zid 8) stanje)) (nth (+ pozicija 2) (nth (+ zid 4) stanje)))
@@ -338,7 +338,7 @@
 
 
 (defun dijagonalaTopDown (stanje zid pozicija); poziva se sa zid 0 pozicija 0 a zid se povecava za 5 odnosno za n+1 prilikom poredjenja
-(cond ( (equal pozicija 4) '()) 
+      (cond ( (equal pozicija 4) '()) 
             (t (cons (if (and 
                               (equal (nth pozicija (nth zid stanje)) (nth pozicija (nth (+ zid 5) stanje)))
                               (equal (nth pozicija (nth (+ zid 5) stanje)) (nth pozicija (nth (+ zid 10) stanje)))
@@ -354,7 +354,7 @@
 
 
 (defun dijagonalaTopDown2(stanje zid pozicija); poziva se sa zid 12 pozicija 0 u slucaju n=4, a generalno sa (n-1)*n za zid a zid se smanjuje za 3 odnosno za n-1 prilikom poredjenja 
-(cond ( (equal pozicija 4) '()) ; 
+      (cond ( (equal pozicija 4) '()) ; 
             (t (cons (if (and 
                               (equal (nth pozicija (nth zid stanje)) (nth pozicija (nth (- zid 3) stanje)))
                               (equal (nth pozicija (nth (- zid 3) stanje)) (nth pozicija (nth (- zid 6) stanje)))
@@ -409,14 +409,25 @@
                    ) 
 )
 
-(defun prebroji24 (ret)
-      (cond 
-       ((equal (cdr ret) NIL ) '())
-       ((equal (car ret) 'X) (setq bodoviX (+ bodoviX 1))) 
-       ((equal (car ret) 'O) (setq bodoviO (+ bodoviO 1)))
+(defun prebrojiX (list)
+      (cond ((null list) 0)
+            ((equal (car list) 'X ) (+ 1 (prebrojiX (cdr list))))
+            (t (prebrojiX (cdr list)))
+      
       )
-      (format t "~%Uros ~%"  )
-      ( prebroji24 (cdr ret))
+)
+(defun prebrojiO (list)
+      (cond ((null list) 0)
+            ((equal (car list) 'O ) (+ 1 (prebrojiO (cdr list))))
+            (t (prebrojiO (cdr list)))
+      
+      )
+)
+(defun prebroji24 (ret)
+      
+      (setq bodoviX (prebrojiX ret))
+      (setq bodoviO (prebrojiO ret))
+
 )
 
 (defun saberiBodove ()
@@ -470,12 +481,12 @@
 (defun proceni-stanje (stanje)
 
 )
-;objekat je tipa (stanje , heruistika)
-(defun max-stanje (objekat)
+;listaObjekata je lista objekata tipa (stanje , heruistika)
+(defun max-stanje (listaObjekata)
 
 )
-;objekat je tipa (stanje , heruistika)
-(defun min-stanje (objekat)
+;listaObjekata je lista objekata tipa (stanje , heruistika)
+(defun min-stanje (listaObjekata)
 
 )
 
@@ -496,7 +507,7 @@
 (postaviPocetno 4 )
 
 ;(trace kraj)
-<<<<<<< HEAD
+
 (odigrajPotez 0);x
 (odigrajPotez 1)
 (odigrajPotez 0)
@@ -563,13 +574,12 @@
 ;(print (dijagonalaVelika3 stanje '15 '0))
 ;(print (dijagonalaVelika4 stanje '3 '0))
 
-=======
->>>>>>> b6d0d4f975524a0c548f9ae1d94b2a57475b02df
+
 
 
 
 ;(trace rekurzivnoIgrajPotezeSimbol)
-(print  (generisiListuSledbenikaSimbol stanje 'O))
+;(print  (generisiListuSledbenikaSimbol stanje 'O))
 ;(print  (generisiListuSledbenikaSimbol stanje 'O))
 ;(print (length (member '- (car stanje))))
 ;(pocniIgru)
@@ -578,3 +588,4 @@
 ;(trace rekurzivnoIgrajPoteze)
 ;(print (rekurzivnoIgrajPoteze stanje 15))
 ;(print (generisiListuSledbenika))
+(print (prebrojiO '(X O X X)))

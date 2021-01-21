@@ -574,3 +574,34 @@
  ))
  ..|#)
 ;;;
+(defun print-board (b) (
+    progv
+        (setf li 0)
+        (loop for x from 0 to (- (power n 2) 1) do (
+            progv
+            (print x)
+            (
+                loop for i from 1 to li do (
+                    princ #\space
+                )
+            )
+            (
+                loop for y from 0 to (- n 1) do (
+                    prin1 (nth y (nth x b))
+                )
+            )
+            (setf li (if (>= li (- n 1)) 0 (+ li 1)))
+        )
+    )
+))
+
+(defun power (x y)
+            (if (= y 0) 1
+                (* x (power x (- y 1))))
+)
+(defun empty-board (n dim) (
+    if (= n 0) '() (cons (if (= dim 4) '(- - - -) '(- - - - - -)) (empty-board (- n 1) dim))
+))
+(setq n '6)
+(setf stanje (empty-board (power n 2) n))
+(print-board stanje)

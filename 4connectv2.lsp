@@ -481,11 +481,19 @@
 )
 
 (defun proceni-stanje (stanje)
-     ; (format t "~%gledam ~a ~%" stanje)
-     (if (equal stanje '((- - - -) (X O - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -))) '10 '0)
+      (format t "~%gledam ~a ~%" stanje)
+     (if (equal stanje '((- - - -) (X - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (O - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -))) '-30 
+      (if (equal stanje '((- - - -) (- - - -) (X O - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -))) '-10 
+     (if (equal stanje '((X 0 - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -))) '-20 
+     (if (equal stanje '((X - - -) (- - - -) (O - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -))) '-25 '0))))
+     
 )
 (defun maxpoz (l)
- (if (null l) '() (maxpoz1 0 1 l)))
+(print "zovem max")
+ (if (null l) '() (maxpoz1 0 1 l))
+
+ )
+
  (defun maxpoz1 (imax i lp)
  (cond ((null (cdr lp)) imax)
  ((> (car lp) (cadr lp))
@@ -495,7 +503,10 @@
 
 
  (defun minpoz (l)
- (if (null l) '() (minpoz1 0 1 l)))
+(print "zovem min")
+ (if (null l) '() (minpoz1 0 1 l))
+
+ )
  (defun minpoz1 (imax i lp)
  (cond ((null (cdr lp)) imax)
  ((< (car lp) (cadr lp))
@@ -511,12 +522,14 @@
 ;listaObjekata je lista objekata tipa (stanje , heruistika)
 (defun max-stanje (listaObjekata)
       ; (format t "~%listaObjekata ~a ~%" listaObjekata)
+      
        (nth (maxpoz (izvuciHeuristike listaObjekata)) listaObjekata)
       ;(car listaObjekata)
 )
 ;listaObjekata je lista objekata tipa (stanje , heruistika)
 (defun min-stanje (listaObjekata)
       (nth (minpoz (izvuciHeuristike listaObjekata)) listaObjekata)
+      (print  (nth (minpoz (izvuciHeuristike listaObjekata)) listaObjekata))
 )
 (defun zameniXO (ulaz)
       (if (equal ulaz 'X) 'O 'X )
@@ -537,13 +550,10 @@
 )
 
 (postaviPocetno 4 )
-(defun test (listaObjekata)
 
-      (print listaObjekata)
-
-)
-;(print (minimax stanje 2 'X T))
-(print (minpoz '(55 50 12 34 2 4 5 123 6 1234 13) ))
+(print (minimax stanje 2 'X T))
+;;;;
+(#|....
 ;(print (minpoz '(0 0 0 0 0 0 1 0 0 0 0 0 0 ) ))
 (print (max-stanje '((((- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (X - - -)) 0)
  (((- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (X - - -) (- - - -)) 0)
@@ -562,4 +572,5 @@
  (((X - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -) (- - - -)) 0))
  
  ))
-
+ ..|#)
+;;;

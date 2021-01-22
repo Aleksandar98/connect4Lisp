@@ -1,3 +1,4 @@
+(#|....
 (defun ispisiStanje(stanje)
             (format t "~%~a ~a ~a ~a ~a ~a ~a ~a ~a ~a ~a ~a ~a ~a ~a ~a " 0 1 2 3 4 5 6 7 8 9 'A 'B 'C 'D 'E 'F)
 
@@ -47,7 +48,7 @@
 
                 (format t "~%~a ~a ~a ~a ~a ~a ~a ~a ~a ~a ~a ~a ~a ~a ~a ~a " 0 1 2 3 4 5 6 7 8 9 'A 'B 'C 'D 'E 'F)
 )
-
+.....|#)
 
 
 (defun vratiNti (n lista)
@@ -71,7 +72,7 @@
 
 (defun postaviPocetno(velicina)
       (setq velicinaKocke velicina)
-     (setq stanje (napraviListuOdN (* velicina velicina)  (napraviListuOdN velicina '-)))
+    ; (setq stanje (napraviListuOdN (* velicina velicina)  (napraviListuOdN velicina '-)))
 
 )
 
@@ -393,7 +394,7 @@
                   (if (and 
                               (equal (nth pozicija (nth zid stanje)) (nth (+ pozicija 1) (nth (- zid 5) stanje)))
                               (equal (nth (+ pozicija 1) (nth (- zid 5) stanje)) (nth (+ pozicija 2) (nth (- zid 10) stanje)))
-                              (equal (nth (+ pozicija 2) (nth (- zid 10) stanje)) (nth (+ pozicija 3) (nth ( zid 15) stanje)))
+                              (equal (nth (+ pozicija 2) (nth (- zid 10) stanje)) (nth (+ pozicija 3) (nth (- zid 15) stanje)))
                         )
                         (nth pozicija (nth zid stanje)) 
                    )  
@@ -430,22 +431,22 @@
 )
 
 (defun saberiBodove () 
-(prebroji24 (horizontalniPogodci stanje '0 '0)) 
-(prebroji24 (horizontalniPogodci2 stanje '0 '0)) 
-(prebroji24 (vertikalniPogodci stanje))
+      (prebroji24 (horizontalniPogodci stanje '0 '0)) 
+      (prebroji24 (horizontalniPogodci2 stanje '0 '0)) 
+      (prebroji24 (vertikalniPogodci stanje))
 
-( prebroji24 ( dijagonalaNarandzasta stanje '0 '0)) 
-(prebroji24 (dijagonalaNarandzasta2 stanje '0 '0)) 
-(prebroji24 (dijagonalaBocna stanje '3 '0)) 
-(prebroji24 (dijagonalaBocna2 stanje '0 '0)) 
-(prebroji24 (dijagonalaTopDown stanje '0 '0)) 
-(prebroji24 (dijagonalaTopDown2 stanje '12 '0)) 
-;brojanje 3D dijagonala
-(cond ( (equal (dijagonalaVelika1 stanje '0 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika1 stanje '0 '0) 'O ) (setq bodoviO (+ bodoviO 1))) ((equal (dijagonalaVelika2 stanje '12 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika2 stanje '12 '0) 'O ) (setq bodoviO (+ bodoviO 1)))  
-      ((equal (dijagonalaVelika3 stanje '15 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika3 stanje '15 '0) 'O ) (setq bodoviO (+ bodoviO 1))) ((equal (dijagonalaVelika4 stanje '3 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika4 stanje '3 '0) 'O ) (setq bodoviO (+ bodoviO 1))) 
-)
-(format t "~%X ima ~a ~%" bodoviX)
-(format t "~%O ima ~a ~%" bodoviO)
+     ( prebroji24 ( dijagonalaNarandzasta stanje '0 '0)) 
+      (prebroji24 (dijagonalaNarandzasta2 stanje '0 '0)) 
+      (prebroji24 (dijagonalaBocna stanje '3 '0)) 
+      (prebroji24 (dijagonalaBocna2 stanje '0 '0)) 
+      (prebroji24 (dijagonalaTopDown stanje '0 '0)) 
+      (prebroji24 (dijagonalaTopDown2 stanje '12 '0)) 
+      ;brojanje 3D dijagonala
+      (cond ( (equal (dijagonalaVelika1 stanje '0 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika1 stanje '0 '0) 'O ) (setq bodoviO (+ bodoviO 1))) ((equal (dijagonalaVelika2 stanje '12 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika2 stanje '12 '0) 'O ) (setq bodoviO (+ bodoviO 1)))  
+            ((equal (dijagonalaVelika3 stanje '15 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika3 stanje '15 '0) 'O ) (setq bodoviO (+ bodoviO 1))) ((equal (dijagonalaVelika4 stanje '3 '0) 'X ) (setq bodoviX (+ bodoviX 1))) ((equal (dijagonalaVelika4 stanje '3 '0) 'O ) (setq bodoviO (+ bodoviO 1))) 
+      )
+      (format t "~%X ima ~a ~%" bodoviX)
+      (format t "~%O ima ~a ~%" bodoviO)
 
 )
 
@@ -460,7 +461,8 @@
       (if (daLiJeKraj stanje) (odrediPobednika))
       ;(setq bodoviX 0)
       ;(setq bodoviO 0)
-      ( ispisiStanje stanje)
+      ( print-board stanje)
+      ;( ispisiStanje stanje)
       (format t "~%Igrac ~a je na potezu~%" igrac)
       (princ "Unesi broj stubica: ")
       (setq potez (read))
@@ -489,30 +491,32 @@
      
 )
 (defun maxpoz (l)
-(print "zovem max")
- (if (null l) '() (maxpoz1 0 1 l))
+      (print "zovem max")
+      (if (null l) '() (maxpoz1 0 1 l))
 
  )
 
  (defun maxpoz1 (imax i lp)
- (cond ((null (cdr lp)) imax)
- ((> (car lp) (cadr lp))
- (maxpoz1 imax (1+ i)
- (cons (car lp) (cddr lp))))
- (t (maxpoz1 i (1+ i) (cdr lp)))))
+      (cond ((null (cdr lp)) imax)
+      ((> (car lp) (cadr lp))
+      (maxpoz1 imax (1+ i)
+      (cons (car lp) (cddr lp))))
+      (t (maxpoz1 i (1+ i) (cdr lp))))
+ )
 
 
  (defun minpoz (l)
-(print "zovem min")
- (if (null l) '() (minpoz1 0 1 l))
+      (print "zovem min")
+      (if (null l) '() (minpoz1 0 1 l))
 
  )
  (defun minpoz1 (imax i lp)
- (cond ((null (cdr lp)) imax)
- ((< (car lp) (cadr lp))
- (minpoz1 imax (1+ i)
- (cons (car lp) (cddr lp))))
- (t (minpoz1 i (1+ i) (cdr lp)))))
+      (cond ((null (cdr lp)) imax)
+      ((< (car lp) (cadr lp))
+      (minpoz1 imax (1+ i)
+      (cons (car lp) (cddr lp))))
+      (t (minpoz1 i (1+ i) (cdr lp))))
+ )
 
 (defun izvuciHeuristike (listaObjekata)
       (cond ( (null listaObjekata) '() )
@@ -549,9 +553,9 @@
                
 )
 
-(postaviPocetno 4 )
 
-(print (minimax stanje 2 'X T))
+
+;;(print (minimax stanje 2 'X T))
 ;;;;
 (#|....
 ;(print (minpoz '(0 0 0 0 0 0 1 0 0 0 0 0 0 ) ))
@@ -603,5 +607,7 @@
     if (= n 0) '() (cons (if (= dim 4) '(- - - -) '(- - - - - -)) (empty-board (- n 1) dim))
 ))
 (setq n '6)
+(postaviPocetno 6 )
 (setf stanje (empty-board (power n 2) n))
-(print-board stanje)
+(pocniIgru)
+
